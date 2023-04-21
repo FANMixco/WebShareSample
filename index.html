@@ -1,0 +1,42 @@
+<script>
+    function shareimg() {
+        let navigator;
+        navigator = window.navigator;
+        const title = "Share JPG";
+        let data = { files: [], text: text, url: url, title: title };
+        const options = { type: "audio/mpimage/jpeg" };
+
+        this.http
+        .get(url, {
+            responseType: "arraybuffer"
+        })
+        .subscribe(response => {
+            console.log(response);
+
+            let blob = new File([response], `https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/TimelessStoriesSVV1.jpg/440px-TimelessStoriesSVV1.jpg`, options);
+            data.files.push(blob);
+            console.log(data);
+            if (navigator.canShare(data)) {
+            navigator
+                .share(data)
+                .then(() => {})
+                .catch(err => {
+                console.error("Unsuccessful share " + err);
+                });
+            }
+        });
+
+        /*if (navigator.share) {
+        const shareData = {
+            files: ['https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/TimelessStoriesSVV1.jpg/440px-TimelessStoriesSVV1.jpg'],
+        };
+
+        navigator.share(shareData)
+            .then(() => console.log('Shared successfully'))
+            .catch((err) => console.log('Error sharing:', err));
+        } else {
+            alert('Web Share API not supported');
+        }*/
+    }
+</script>
+<button onclick="shareimg()">Share</button>
