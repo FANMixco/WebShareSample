@@ -1,42 +1,48 @@
-<script>
-    function shareimg() {
-        let navigator;
-        navigator = window.navigator;
-        const title = "Share JPG";
-        let data = { files: [], text: text, url: url, title: title };
-        const options = { type: "audio/mpimage/jpeg" };
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <meta name="description" content="Simple Web Share example.">
+        <meta name="keywords" content="webshare, api, javascript">
+        <script>
+            const URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/TimelessStoriesSVV1.jpg/440px-TimelessStoriesSVV1.jpg';
+            const TYPE = 'image/jpeg';
 
-        this.http
-        .get(url, {
-            responseType: "arraybuffer"
-        })
-        .subscribe(response => {
-            console.log(response);
+            function webshare(text) {
+                let navigator;
+                navigator = window.navigator;
+                const title = "yourTitle";
+                let data = { files: [], text: text, url: URL, title: title };
 
-            let blob = new File([response], `https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/TimelessStoriesSVV1.jpg/440px-TimelessStoriesSVV1.jpg`, options);
-            data.files.push(blob);
-            console.log(data);
-            if (navigator.canShare(data)) {
-            navigator
-                .share(data)
-                .then(() => {})
-                .catch(err => {
-                console.error("Unsuccessful share " + err);
-                });
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', URL, true);
+                xhr.responseType = 'arraybuffer';
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                    var response = xhr.response;
+                    console.log(response);
+
+                    var blob = new File([response], text + '.jpg', { type: TYPE });
+                    data.files.push(blob);
+                    console.log(data);
+
+                    if (navigator.canShare && navigator.canShare(data)) {
+                        navigator.share(data)
+                        .then(function() {})
+                        .catch(function(err) {
+                            console.error('Unsuccessful share ' + err);
+                        });
+                    }
+                    } else {
+                    console.error('Failed to load ' + URL + ': ' + xhr.status);
+                    }
+                };
+                xhr.send();
             }
-        });
-
-        /*if (navigator.share) {
-        const shareData = {
-            files: ['https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/TimelessStoriesSVV1.jpg/440px-TimelessStoriesSVV1.jpg'],
-        };
-
-        navigator.share(shareData)
-            .then(() => console.log('Shared successfully'))
-            .catch((err) => console.log('Error sharing:', err));
-        } else {
-            alert('Web Share API not supported');
-        }*/
-    }
-</script>
-<button onclick="shareimg()">Share</button>
+        </script>
+    </head>
+    <body>
+        <button onclick="webshare('440px-TimelessStoriesSVV1.jpg')">Share</button>
+    </body>
+</html>
