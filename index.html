@@ -5,18 +5,21 @@
         <meta charset="UTF-8">
         <meta name="description" content="Simple Web Share example.">
         <meta name="keywords" content="webshare, api, javascript">
+    </head>
+    <body>
+        <button onclick="webshare('440px-TimelessStoriesSVV1.jpg')">Share</button>
         <script>
             const URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/TimelessStoriesSVV1.jpg/440px-TimelessStoriesSVV1.jpg';
             const TYPE = 'image/jpeg';
             const EXT = '.jpg';
             const TITLE = "yourTitle";
+            const IS_SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
             function webshare(text) {
-                var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
                 let navigator;
                 navigator = window.navigator;
-                let data = isSafari ? { files: [], text: '', url: URL, title: '' } : { files: [], text: text, url: URL, title: TITLE };
+                let data = IS_SAFARI ? { files: [], text: '', url: URL, title: '' } : { files: [], text: text, url: URL, title: TITLE };
 
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', URL, true);
@@ -44,8 +47,5 @@
                 xhr.send();
             }
         </script>
-    </head>
-    <body>
-        <button onclick="webshare('440px-TimelessStoriesSVV1.jpg')">Share</button>
     </body>
 </html>
