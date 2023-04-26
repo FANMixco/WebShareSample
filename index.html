@@ -36,7 +36,7 @@
                         if (navigator.canShare && navigator.canShare(data)) {
                             navigator.share(data)
                             .then(function() {
-                                if (IS_SAFARI) {
+                                if (IS_SAFARI && (text !== undefined || URL !== undefined || TITLE !== undefined)) {
 					                let dataText = { files: [], text: text, url: URL, title: TITLE };
 					                navigator.share(dataText);
 				                }                                
