@@ -35,7 +35,12 @@
 
                         if (navigator.canShare && navigator.canShare(data)) {
                             navigator.share(data)
-                            .then(function() {})
+                            .then(function() {
+                                if (IS_SAFARI) {
+					                let dataText = { files: [], text: text, url: URL, title: TITLE };
+					                navigator.share(dataText);
+				                }                                
+                            })
                             .catch(function(err) {
                                 console.error('Unsuccessful share ' + err);
                             });
